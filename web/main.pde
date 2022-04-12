@@ -1,3 +1,113 @@
+class Pso {
+	public float x, y;
+	private float vx, vy;
+	private float r1, r2;	//[0,0.14] の範囲の値をとる乱数
+	private float best_x;	//その粒子がこれまでに発見したベストな位置
+	private float best_y;	//その粒子がこれまでに発見したベストな位置
+	private float w = 0.5;//慣性定数
+	private float[] old_best_x = new float[10];
+	private float[] old_best_y = new float[10];
+
+	public Pso() {
+		x = random(dispSize);
+		y = random(dispSize);
+		vx = 0.01;
+		vy = 0.01;
+		best_x = x;
+		best_y = y;
+	}
+
+	// public float x() {
+	// 	return x;
+	// }
+
+	// public float y() {
+	// 	return y;
+	// }
+
+	public float score() {
+		return evaluation(x, y);
+	}
+	
+	public float bestScore() {
+		return evaluation(best_x, best_y);
+	}
+
+	public void draw() {
+		noStroke();
+		fill(20, 53, 100);
+		// fill(140, 50, 90);
+		ellipse(x, y, 10, 10);
+	}
+
+	//座標の更新
+	public void updatePosition() {
+		x += vx;
+		y += vy;
+		
+		if (x > dispSize) {
+			x = 0;
+		} else if (x < 0) {
+			x = dispSize;
+		}
+		if (y > dispSize) {
+			y = 0;
+		} else if (y < 0) {
+			y = dispSize;
+		}
+	}
+
+	//ベストな座標の更新
+	public void updateBest() {
+		if ( bestScore() > score()){
+			best_x = x;
+			best_y = y;
+		} 
+	}
+
+	//速度の更新
+	public void updateVelocity(Global cb) {
+		r1 = random(0, 0.14);
+		r2 = random(0, 0.14);
+		
+		vx = w * vx + r1 * (best_x - x) + r2 * (cb.x - x);
+		vy = w * vy + r1 * (best_y - y) + r2 * (cb.y - y);
+	}
+
+
+}
+
+class Global{
+	public float x, y;
+
+	public Global(float _x, float _y){
+		x = _x;
+		y = _y;
+	}
+	
+	public Global(){
+	}
+
+	// public float x() {
+	// 	return x;
+	// }
+
+	// public float y() {
+	// 	return y;
+	// }
+
+	public void update(Pso pso){
+		if ( this.score() > pso.score() ){
+			x = pso.x;
+			y = pso.y;
+		}
+	}
+
+	public float score() {
+		return evaluation(x, y);
+	}
+}
+
 int dispSize = 600;
 int NumOfPso = 100;
 int NumOfCluster = int(NumOfPso / 10);
@@ -15,12 +125,8 @@ float evaluation(float x, float y){
 }
 
 
-void settings() {
-    size(dispSize, dispSize);
-}
-
 void setup() {
-	// size(600, 600);
+	size(600, 600);
 	frameRate(10);
 
 	//psoを初期化
@@ -42,7 +148,7 @@ void setup() {
     // 現在のクラスタベストの初期化
 	for (Pso pso : psoList) {
 		int idx = int(psoList.indexOf(pso) % NumOfCluster);
-		clusterBestList.add(idx, new Global(pso.x(), pso.y()));
+		clusterBestList.add(idx, new Global(pso.x, pso.y));
 		clusterBestList.get(idx).update(pso);
 	}
 	
@@ -56,7 +162,7 @@ void setup() {
 	}
 
 	background(0);
-	noLoop();
+	// noLoop();
 }
 
 
@@ -75,15 +181,15 @@ void draw(){
 			// 2色グラデーション
 			float hue = 0;
 			float sat = 50;
-			float bri = 80;		
+			float bri = 100;		
 			if (0 < v && v < 15) {
-				hue = 210;
+				hue = 150;
 				sat = (15 - v) / 15 * 100;
 			} else if (v == 15) {
 				hue = 0;
 				sat = 0;
 			} else if (15 < v && v <= 30) {
-				hue = 10;
+				hue = 190;
 				sat = (v - 15) / 15 * 100;
 			}
 			
@@ -128,7 +234,7 @@ void draw(){
 	text(str0, 10, height-30);
 
 	fill(0,0,100); stroke(0,0,0);
-	rect(textWidth(str0)+20, height-29, 10, 10);
+	rect(textWidth(str0)+30, height-29, 10, 10);
 
 	fill(0,0,0); noStroke();
 	text("SST (℃)", 10, height-70);
@@ -137,16 +243,16 @@ void draw(){
 		float h = 0;
 		float s = 0;		
 		if (v < 15) {
-			h = 200;
+			h = 190;
 			s = float(15 - v) / 15 * 100;
 		} else if (v == 15) {
 			h = 0;
 			s = 0;
 		} else if (15 < v) {
-			h = 10;
+			h = 150;
 			s = float(v - 15) / 15  * 100;
 		}
-		fill(h, s, 80); noStroke();
+		fill(h, s, 100); noStroke();
 		rect(10 + v * 5, height-56, 5, 10);
 	}
 	noFill(); stroke(0, 0, 0);
