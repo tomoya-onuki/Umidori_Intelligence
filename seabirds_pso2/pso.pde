@@ -35,7 +35,8 @@ class Pso {
 
 	public void draw() {
 		noStroke();
-		fill(140, 50, 90);
+		// fill(140, 50, 90);
+		fill(20, 53, 100);
 		ellipse(x, y, 10, 10);
 	}
 

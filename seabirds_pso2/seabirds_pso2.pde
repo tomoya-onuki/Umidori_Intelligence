@@ -1,4 +1,4 @@
-int dispSize = 600;
+int dispSize = 800;
 int NumOfPso = 100;
 int NumOfCluster = int(NumOfPso / 10);
 ArrayList<Pso> psoList = new ArrayList<Pso>();
@@ -22,6 +22,8 @@ void settings() {
 void setup() {
 	// size(600, 600);
 	frameRate(10);
+
+	surface.setTitle("Umidori Intelligence");
 
 	//psoを初期化
 	for (int i = 0; i < NumOfPso; i++) {
@@ -75,15 +77,15 @@ void draw(){
 			// 2色グラデーション
 			float hue = 0;
 			float sat = 50;
-			float bri = 80;		
+			float bri = 100;		
 			if (0 < v && v < 15) {
-				hue = 210;
+				hue = 150;
 				sat = (15 - v) / 15 * 100;
 			} else if (v == 15) {
 				hue = 0;
 				sat = 0;
 			} else if (15 < v && v <= 30) {
-				hue = 10;
+				hue = 190;
 				sat = (v - 15) / 15 * 100;
 			}
 			
@@ -137,16 +139,16 @@ void draw(){
 		float h = 0;
 		float s = 0;		
 		if (v < 15) {
-			h = 200;
+			h = 190;
 			s = float(15 - v) / 15 * 100;
 		} else if (v == 15) {
 			h = 0;
 			s = 0;
 		} else if (15 < v) {
-			h = 10;
+			h = 150;
 			s = float(v - 15) / 15  * 100;
 		}
-		fill(h, s, 80); noStroke();
+		fill(h, s, 100); noStroke();
 		rect(10 + v * 5, height-56, 5, 10);
 	}
 	noFill(); stroke(0, 0, 0);
