@@ -1,0 +1,34 @@
+{
+  "name": "Umidori_Intelligence",
+  "version": "1.0.0",
+  "description": "簡単な1変数関数の最小値を求める",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomoya-onuki/Umidori_Intelligence.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomoya-onuki/Umidori_Intelligence/issues"
+  },
+  "homepage": "https://github.com/tomoya-onuki/Umidori_Intelligence#readme",
+  "devDependencies": {
+    "@types/jquery": "^3.5.14",
+    "ts-loader": "^9.3.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "@types/chroma-js": "^2.1.4",
+    "chroma-js": "^2.4.2",
+    "jquery": "^3.6.0"
+  }
+}
